@@ -122,10 +122,21 @@ try {
       }
     } else if (method === 'POST') {
       const bs = [];
-      req.on('data', d => {
+      let totalSize = 0;
+      const _data = d => {
         bs.push(d);
-      });
-      req.on('end', () => {
+        totalSize += d.byteLength;
+        if (totalSize >= MAX_SIZE) {
+          _respond(413, JSON.stringify({
+            error: 'payload too large',
+          }));
+          
+          req.removeListener('data', _data);
+          req.removeListener('end', _end);
+        }
+      };
+      req.on('data', _data);
+      const _end = () => {
         const b = Buffer.concat(bs);
         bs.length = 0;
 
@@ -156,7 +167,8 @@ try {
             _respond(500, err.stack);
           }
         });
-      });
+      };
+      req.on('end', _end);
     } else {
       _respond(500, JSON.stringify({
         error: err.stack,

@@ -178,7 +178,6 @@ try {
 };
 
 const server = http.createServer(_req('http:'));
-server.on('upgrade', _ws('http:'));
 const server2 = https.createServer({
   cert: CERT,
   key: PRIVKEY,

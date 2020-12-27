@@ -91,11 +91,13 @@ const _handleIpfs = async (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', '*');
   };
 
+  console.log('got ipfs req 1');
+
 try {
     const {method} = req;
     const {pathname: p} = url.parse(req.url);
 
-    // console.log('got ipfs req', {method, p});
+    // console.log('got ipfs req 2', {method, p});
 
     if (method === 'GET') {
       const match = req.url.match(/^(?:\/ipfs)?\/([a-z0-9]+)(?:\/(.*))?$/i);

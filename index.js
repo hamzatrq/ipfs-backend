@@ -144,8 +144,7 @@ try {
             proxyRes.pipe(res);
           }
         } else {
-          res.statusCode = 500;
-          res.end(err.stack);
+          _respond(500, err.stack);
         }
       });
     } else {

@@ -121,31 +121,40 @@ try {
         res.end();
       }
     } else if (method === 'POST') {
-      const form = new FormData();
-      form.append('file', req);
-      form.submit('http://127.0.0.1:5001/api/v0/add', function(err, proxyRes) {
-        if (!err) {
-          if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
-            const bs = [];
-            proxyRes.on('data', function(d) {
-              bs.push(d);
-            });
-            proxyRes.on('end', function() {
-              const b = Buffer.concat(bs);
-              const s = b.toString('utf8');
-              const j = JSON.parse(s);
-              const {Hash} = j;
-              res.end(JSON.stringify(Hash));
-            });
+      const bs = [];
+      req.on('data', d => {
+        bs.push(d);
+      });
+      req.on('end', () => {
+        const b = Buffer.concat(bs);
+        bs.length = 0;
+
+        const form = new FormData();
+        form.append('file', b);
+        form.submit('http://127.0.0.1:5001/api/v0/add', function(err, proxyRes) {
+          if (!err) {
+            if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
+              const bs = [];
+              proxyRes.on('data', function(d) {
+                bs.push(d);
+              });
+              proxyRes.on('end', function() {
+                const b = Buffer.concat(bs);
+                const s = b.toString('utf8');
+                const j = JSON.parse(s);
+                const {Hash} = j;
+                res.end(JSON.stringify(Hash));
+              });
+            } else {
+              console.log('error', proxyRes.statusCode, proxyRes.headers);
+              
+              res.statusCode = proxyRes.statusCode;
+              proxyRes.pipe(res);
+            }
           } else {
-            console.log('error', proxyRes.statusCode, proxyRes.headers);
-            
-            res.statusCode = proxyRes.statusCode;
-            proxyRes.pipe(res);
+            _respond(500, err.stack);
           }
-        } else {
-          _respond(500, err.stack);
-        }
+        });
       });
     } else {
       _respond(500, JSON.stringify({

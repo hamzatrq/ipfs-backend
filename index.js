@@ -95,7 +95,7 @@ try {
     const {method} = req;
     const {pathname: p} = url.parse(req.url);
 
-    console.log('got req', {method, p});
+    // console.log('got ipfs req', {method, p});
 
     if (method === 'GET') {
       const match = req.url.match(/^(?:\/ipfs)?\/([a-z0-9]+)(?:\/(.*))?$/i);
@@ -159,9 +159,8 @@ try {
 
 const _req = protocol => (req, res) => {
 try {
-
   const o = url.parse(protocol + '//' + (req.headers['host'] || '') + req.url);
-  let match;
+  console.log('got req', req.method, o);
   if (o.host === 'ipfs.exokit.org') {
     _handleIpfs(req, res);
     return;

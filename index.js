@@ -91,14 +91,14 @@ const _handleIpfs = async (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', '*');
   };
 
-  console.log('got ipfs req 1', req);
+  // console.log('got ipfs req 1', req);
 
 try {
     const {method} = req;
-    console.log('got ipfs req 2', method);
+    // console.log('got ipfs req 2', method);
     const {pathname: p} = url.parse(req.url);
 
-    console.log('got ipfs req 3', {method, p});
+    // console.log('got ipfs req 3', {method, p});
 
     if (method === 'GET') {
       const match = req.url.match(/^(?:\/ipfs)?\/([a-z0-9]+)(?:\/(.*))?$/i);
@@ -173,7 +173,7 @@ try {
 const _req = protocol => (req, res) => {
 try {
   const o = url.parse(protocol + '//' + (req.headers['host'] || '') + req.url);
-  console.log('got req', req.method, o);
+  // console.log('got req', req.method, o);
   if (o.host === 'ipfs.exokit.org') {
     _handleIpfs(req, res);
     return;

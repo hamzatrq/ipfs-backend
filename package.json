@@ -1,0 +1,46 @@
+{
+  "name": "exokit-backend",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "sudo $(which node) $(which forever) start -a -l forever.log -o stdout.log -e stderr.log index.js",
+    "stop": "sudo $(which node) $(which forever) stop index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/modulesio/webaverse-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/modulesio/webaverse-server/issues"
+  },
+  "homepage": "https://github.com/modulesio/webaverse-server#readme",
+  "dependencies": {
+    "@onflow/sdk": "0.0.31",
+    "@onflow/types": "0.0.4",
+    "aws-sdk": "^2.750.0",
+    "bip39": "^3.0.2",
+    "discord.js": "^12.2.0",
+    "ethereumjs-wallet": "^1.0.1",
+    "form-data": "^3.0.0",
+    "form-urlencoded": "^4.2.1",
+    "http-proxy": "^1.18.1",
+    "lru": "^3.1.0",
+    "mime": "^2.4.6",
+    "mkdirp": "^1.0.4",
+    "node-fetch": "^2.6.0",
+    "ps-node": "^0.1.6",
+    "puppeteer": "^5.3.1",
+    "sha3": "^2.1.3",
+    "stripe": "^8.95.0",
+    "uuid": "^8.3.2",
+    "web3": "^1.3.0",
+    "ws": "^7.3.1"
+  },
+  "devDependencies": {
+    "forever": "^3.0.0",
+    "nodemon": "^2.0.4"
+  }
+}

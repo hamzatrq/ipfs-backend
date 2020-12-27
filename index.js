@@ -93,9 +93,9 @@ const _handleIpfs = async (req, res) => {
 
 try {
     const {method} = req;
-    const {query, pathname: p} = url.parse(req.url, true);
+    const {pathname: p} = url.parse(req.url);
 
-    // console.log('got ethereum', {method, p, query});
+    console.log('got req', {method, p});
 
     if (method === 'GET') {
       const match = req.url.match(/^(?:\/ipfs)?\/([a-z0-9]+)(?:\/(.*))?$/i);

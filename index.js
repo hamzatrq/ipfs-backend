@@ -34,7 +34,7 @@ const {default: formurlencoded} = require('form-urlencoded');
 const {getExt, makePromise} = require('./utils.js');
 // const browserManager = require('./browser-manager.js');
 
-const api = require('./api.js');
+// const api = require('./api.js');
 // const { _handleStorageRequest } = require('./routes/storage.js');
 // const { _handleAccountsRequest } = require('./routes/accounts.js');
 // const { _handlePreviewRequest } = require('./routes/preview.js')

@@ -132,7 +132,7 @@ try {
               const s = b.toString('utf8');
               const j = JSON.parse(s);
               const {Hash} = j;
-              res.end(Hash);
+              res.end(JSON.stringify(Hash));
             });
           } else {
             res.statusCode = proxyRes.statusCode;

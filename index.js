@@ -138,6 +138,8 @@ try {
               res.end(JSON.stringify(Hash));
             });
           } else {
+            console.log('error', proxyRes.statusCode, proxyRes.headers);
+            
             res.statusCode = proxyRes.statusCode;
             proxyRes.pipe(res);
           }

@@ -142,8 +142,9 @@ try {
                 const b = Buffer.concat(bs);
                 const s = b.toString('utf8');
                 const j = JSON.parse(s);
-                const {Hash} = j;
-                res.end(JSON.stringify(Hash));
+                res.end(JSON.stringify({
+                  hash: j.Hash,
+                }));
               });
             } else {
               console.log('error', proxyRes.statusCode, proxyRes.headers);

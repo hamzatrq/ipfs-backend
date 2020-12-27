@@ -182,7 +182,6 @@ const server2 = https.createServer({
   cert: CERT,
   key: PRIVKEY,
 }, _req('https:'));
-server2.on('upgrade', _ws('https:'));
 
 const _warn = err => {
   console.warn('uncaught: ' + err.stack);

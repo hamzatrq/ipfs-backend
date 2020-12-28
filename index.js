@@ -100,7 +100,11 @@ try {
 
     // console.log('got ipfs req 3', {method, p});
 
-    if (method === 'GET') {
+    _setCorsHeaders(res);
+    if (method === 'OPTIONS') {
+      res.statusCode = 200;
+      res.end();
+    } else if (method === 'GET') {
       const match = req.url.match(/^(?:\/ipfs)?\/([a-z0-9]+)(?:\/(.*))?$/i);
       if (match) {
         const proxy = httpProxy.createProxyServer({});

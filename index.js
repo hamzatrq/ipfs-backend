@@ -74,9 +74,9 @@ ipfsProcess.stderr.pipe(process.stderr);
 ipfsProcess.on('exit', code => {
   console.warn('ipfs exited', code);
 });
-process.on('exit', () => {
-  ipfsProcess.kill(9);
-});
+//process.on('exit', () => {
+//  ipfsProcess.kill(9);
+//});
 
 const MAX_SIZE = 50 * 1024 * 1024;
 const _handleIpfs = async (req, res) => {

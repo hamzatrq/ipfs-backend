@@ -127,8 +127,10 @@ try {
     } else if (method === 'GET') {
       const match = req.url.match(/^(\/ipfs)?(\/[a-z0-9]+)(?:\/(.*))?$/i);
       if (match) {
+        console.log('got match', req.url, match);
         const proxy = httpProxy.createProxyServer({});
         req.url = (match[1] || '/ipfs') + match[2];
+        console.log('proxy url', req.url);
         proxy
           .web(req, res, {
             target: `http://127.0.0.1:${IPFS_PORT}`,
@@ -141,6 +143,8 @@ try {
             res.end();
           });
       } else {
+        console.log('no match', req.url);
+        
         res.statusCode = 404;
         res.end();
       }

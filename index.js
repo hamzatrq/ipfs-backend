@@ -143,7 +143,7 @@ try {
       }
     } else if (method === 'POST') {
       const contentType = headers['content-type'];
-      const isFormData = contentType === 'application/x-www-form-urlencoded' || /^multipart\/form\-data;/.test(contentType);
+      const isFormData = contentType === /^multipart\/form\-data;/.test(contentType);
       console.log('got post content type', {contentType, isFormData});
       
       const bs = [];
@@ -165,7 +165,7 @@ try {
         const b = Buffer.concat(bs);
         bs.length = 0;
         
-        console.log('end', b.length);
+        console.log('end', b.toString());
 
         if (isFormData) {
           console.log('end form data', isFormData);

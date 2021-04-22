@@ -169,9 +169,8 @@ try {
 
         if (isFormData) {
           console.log('end form data', isFormData);
-          /* const proxyReq = http.request({
+          const proxyReq = http.request(addUrl, {
             method: 'POST',
-            url: addUrl,
             headers: req.headers,
           }, proxyRes => {
             console.log('got proxy res 1', proxyRes.statusCode);
@@ -193,7 +192,7 @@ try {
             
             res.statusCode = 500;
             res.end(JSON.stringify(err));
-          }); */
+          });
         } else {
           const form = new FormData();
           form.append('file', b);

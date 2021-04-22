@@ -143,6 +143,7 @@ try {
       }
     } else if (method === 'POST') {
       const contentType = headers['content-type'];
+      const contentLength = parseInt(headers['content-length'], 10) || 0;
       const isFormData = /^multipart\/form\-data;/.test(contentType);
       console.log('got post content type', {contentType, isFormData});
       
@@ -171,7 +172,10 @@ try {
           console.log('end form data', isFormData);
           const proxyReq = http.request(addUrl, {
             method: 'POST',
-            headers: req.headers,
+            headers: {
+              'Content-Type': contentType,
+              'Content-Length': contentLength,
+            },
           }, proxyRes => {
             console.log('got proxy res 1', proxyRes.statusCode);
             if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {

@@ -86,6 +86,7 @@ const _readJson = (proxyRes, cb) => {
   proxyRes.on('end', function() {
     const b = Buffer.concat(bs);
     const s = b.toString('utf8');
+    console.log('got json result', {headers: proxyRes.headers, s});
     const split = s.split('\n');
     const js = split.map(s => JSON.parse(s));
     cb(null, js);

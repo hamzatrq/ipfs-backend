@@ -78,7 +78,7 @@ ipfsProcess.on('exit', code => {
 //  ipfsProcess.kill(9);
 //});
 
-const _readJson = (proxyRes, cb) => {
+const c = (proxyRes, cb) => {
   const bs = [];
   proxyRes.on('data', function(d) {
     bs.push(d);
@@ -182,7 +182,7 @@ try {
             console.log('got proxy res 1', proxyRes.statusCode);
             if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
               _readJson(proxyRes, (err, js) => {
-                console.log('got proxy res 2', err, j);
+                console.log('got proxy res 2', err, js);
                 if (!err) {
                   res.end(JSON.stringify(js.map(j => ({
                     hash: j.Hash,

@@ -97,7 +97,8 @@ const _readJson = (proxyRes, cb) => {
 };
 
 const MAX_SIZE = 50 * 1024 * 1024;
-const addUrl = 'http://127.0.0.1:5001/api/v0/add';
+const IPFS_PORT = 5001;
+const addUrl = `http://127.0.0.1:${IPFS_PORT}/api/v0/add`;
 const _handleIpfs = async (req, res) => {
   const _respond = (statusCode, body) => {
     res.statusCode = statusCode;
@@ -124,13 +125,13 @@ try {
       res.statusCode = 200;
       res.end();
     } else if (method === 'GET') {
-      const match = req.url.match(/^(?:\/ipfs)?\/([a-z0-9]+)(?:\/(.*))?$/i);
+      const match = req.url.match(/^(\/ipfs)?(\/[a-z0-9]+)(?:\/(.*))?$/i);
       if (match) {
         const proxy = httpProxy.createProxyServer({});
-        req.url = '/ipfs/' + match[1];
+        req.url = (match[1] || '/ipfs') + match[2];
         proxy
           .web(req, res, {
-            target: 'http://127.0.0.1:8080',
+            target: `http://127.0.0.1:${IPFS_PORT}`,
             // secure: false,
             // changeOrigin: true,
           }, err => {

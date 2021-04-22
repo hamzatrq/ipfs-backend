@@ -126,7 +126,7 @@ try {
       res.statusCode = 200;
       res.end();
     } else if (method === 'GET') {
-      const match = req.url.match(/^(\/ipfs)?(\/[a-z0-9]+)(?:\/(.*))?$/i);
+      const match = req.url.match(/^(\/ipfs)?(\/[a-z0-9]+\/?)/i);
       if (match) {
         console.log('got match', req.url, match);
         const proxy = httpProxy.createProxyServer({});

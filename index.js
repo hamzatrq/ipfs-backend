@@ -94,7 +94,7 @@ const _handleIpfs = async (req, res) => {
   // console.log('got ipfs req 1', req);
 
 try {
-    const {method} = req;
+    const {method, headers} = req;
     // console.log('got ipfs req 2', method);
     const {pathname: p} = url.parse(req.url);
 
@@ -121,6 +121,9 @@ try {
         res.end();
       }
     } else if (method === 'POST') {
+      const contentType = headers['content-type'];
+      console.log('got post content type', {contentType});
+      
       const bs = [];
       let totalSize = 0;
       const _data = d => {

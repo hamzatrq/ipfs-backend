@@ -189,6 +189,8 @@ try {
           });
           proxyReq.end(b);
           proxyReq.on('error', err => {
+            console.log('got error', err);
+            
             res.statusCode = 500;
             res.end(JSON.stringify(err));
           });

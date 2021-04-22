@@ -78,7 +78,7 @@ ipfsProcess.on('exit', code => {
 //  ipfsProcess.kill(9);
 //});
 
-const c = (proxyRes, cb) => {
+const _readJson = (proxyRes, cb) => {
   const bs = [];
   proxyRes.on('data', function(d) {
     bs.push(d);

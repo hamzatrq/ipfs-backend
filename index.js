@@ -165,7 +165,7 @@ try {
         const b = Buffer.concat(bs);
         bs.length = 0;
         
-        console.log('end', b.toString());
+        console.log('end', b.length);
 
         if (isFormData) {
           console.log('end form data', isFormData);

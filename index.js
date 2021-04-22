@@ -173,7 +173,7 @@ try {
             method: 'POST',
             headers: req.headers,
           }, proxyRes => {
-            console.log('got proxy res 1', proxyRes.statusCode);
+            console.log('got proxy res 1', proxyRes.ok, proxyRes.statusCode);
             _readJson(proxyRes, (err, j) => {
               console.log('got proxy res 2', err, j);
               if (!err) {

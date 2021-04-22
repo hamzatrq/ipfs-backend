@@ -238,7 +238,7 @@ try {
 const _req = protocol => (req, res) => {
 try {
   const o = url.parse(protocol + '//' + (req.headers['host'] || '') + req.url);
-  // console.log('got req', req.method, o);
+  console.log('got req', req.method, o);
   if (o.host === 'ipfs.exokit.org') {
     _handleIpfs(req, res);
     return;

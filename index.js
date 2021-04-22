@@ -173,18 +173,25 @@ try {
             method: 'POST',
             headers: req.headers,
           }, proxyRes => {
-            console.log('got proxy res 1', proxyRes.ok, proxyRes.statusCode);
-            _readJson(proxyRes, (err, j) => {
-              console.log('got proxy res 2', err, j);
-              if (!err) {
-                res.end(JSON.stringify({
-                  hash: j.Hash,
-                }));
-              } else {
-                res.statusCode = 500;
-                res.end(JSON.stringify(err));
-              }
-            });
+            console.log('got proxy res 1', proxyRes.statusCode);
+            if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
+              _readJson(proxyRes, (err, j) => {
+                console.log('got proxy res 2', err, j);
+                if (!err) {
+                  res.end(JSON.stringify({
+                    hash: j.Hash,
+                  }));
+                } else {
+                  res.statusCode = 500;
+                  res.end(JSON.stringify(err));
+                }
+              });
+            } else {
+              console.log('status code error in form', proxyRes.statusCode, proxyRes.headers);
+              
+              res.statusCode = proxyRes.statusCode;
+              proxyRes.pipe(res);
+            }
           });
           proxyReq.end(b);
           proxyReq.on('error', err => {
@@ -210,7 +217,7 @@ try {
                   }
                 });
               } else {
-                console.log('error', proxyRes.statusCode, proxyRes.headers);
+                console.log('status code error in regular', proxyRes.statusCode, proxyRes.headers);
                 
                 res.statusCode = proxyRes.statusCode;
                 proxyRes.pipe(res);

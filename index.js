@@ -74,9 +74,9 @@ ipfsProcess.stderr.pipe(process.stderr);
 ipfsProcess.on('exit', code => {
   console.warn('ipfs exited', code);
 });
-process.on('exit', () => {
-  ipfsProcess.kill(9);
-});
+//process.on('exit', () => {
+//  ipfsProcess.kill(9);
+//});
 
 const MAX_SIZE = 50 * 1024 * 1024;
 const _handleIpfs = async (req, res) => {
@@ -100,7 +100,11 @@ try {
 
     // console.log('got ipfs req 3', {method, p});
 
-    if (method === 'GET') {
+    _setCorsHeaders(res);
+    if (method === 'OPTIONS') {
+      res.statusCode = 200;
+      res.end();
+    } else if (method === 'GET') {
       const match = req.url.match(/^(?:\/ipfs)?\/([a-z0-9]+)(?:\/(.*))?$/i);
       if (match) {
         const proxy = httpProxy.createProxyServer({});

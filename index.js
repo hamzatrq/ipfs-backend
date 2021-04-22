@@ -97,6 +97,7 @@ const _readJson = (proxyRes, cb) => {
 };
 
 const MAX_SIZE = 50 * 1024 * 1024;
+const IPFS_HTTP_PORT = 8080;
 const IPFS_PORT = 5001;
 const addUrl = `http://127.0.0.1:${IPFS_PORT}/api/v0/add`;
 const _handleIpfs = async (req, res) => {
@@ -133,7 +134,7 @@ try {
         console.log('proxy url', req.url);
         proxy
           .web(req, res, {
-            target: `http://127.0.0.1:${IPFS_PORT}`,
+            target: `http://127.0.0.1:${IPFS_HTTP_PORT}`,
             // secure: false,
             // changeOrigin: true,
           }, err => {

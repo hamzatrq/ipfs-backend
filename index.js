@@ -78,7 +78,24 @@ ipfsProcess.on('exit', code => {
 //  ipfsProcess.kill(9);
 //});
 
+const _readJson = (proxyRes, cb) => {
+  const bs = [];
+  proxyRes.on('data', function(d) {
+    bs.push(d);
+  });
+  proxyRes.on('end', function() {
+    const b = Buffer.concat(bs);
+    const s = b.toString('utf8');
+    const j = JSON.parse(s);
+    cb(null, j);
+  });
+  proxyRes.on('error', err => {
+    cb(err, null);
+  });
+};
+
 const MAX_SIZE = 50 * 1024 * 1024;
+const addUrl = 'http://127.0.0.1:5001/api/v0/add';
 const _handleIpfs = async (req, res) => {
   const _respond = (statusCode, body) => {
     res.statusCode = statusCode;
@@ -126,7 +143,8 @@ try {
       }
     } else if (method === 'POST') {
       const contentType = headers['content-type'];
-      console.log('got post content type', {contentType});
+      const isFormData = /^multipart\/form\-data;/.test(contentType);
+      // console.log('got post content type', {contentType});
       
       const bs = [];
       let totalSize = 0;
@@ -147,33 +165,55 @@ try {
         const b = Buffer.concat(bs);
         bs.length = 0;
 
-        const form = new FormData();
-        form.append('file', b);
-        form.submit('http://127.0.0.1:5001/api/v0/add', function(err, proxyRes) {
-          if (!err) {
-            if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
-              const bs = [];
-              proxyRes.on('data', function(d) {
-                bs.push(d);
-              });
-              proxyRes.on('end', function() {
-                const b = Buffer.concat(bs);
-                const s = b.toString('utf8');
-                const j = JSON.parse(s);
+        if (isFormData) {
+          const proxyReq = http.request({
+            method: 'POST',
+            url: addUrl,
+            headers: req.headers,
+          }, proxyRes => {
+            _readJson(proxyRes, (err, j) => {
+              if (!err) {
                 res.end(JSON.stringify({
                   hash: j.Hash,
                 }));
-              });
+              } else {
+                res.statusCode = 500;
+                res.end(JSON.stringify(err));
+              }
+            });
+          });
+          proxyReq.end(b);
+          proxyReq.on('error', err => {
+            res.statusCode = 500;
+            res.end(JSON.stringify(err));
+          });
+        } else {
+          const form = new FormData();
+          form.append('file', b);
+          form.submit(addUrl, function(err, proxyRes) {
+            if (!err) {
+              if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
+                _readJson(proxyRes, (err, j) => {
+                  if (!err) {
+                    res.end(JSON.stringify({
+                      hash: j.Hash,
+                    }));
+                  } else {
+                    res.statusCode = 500;
+                    res.end(JSON.stringify(err));
+                  }
+                });
+              } else {
+                console.log('error', proxyRes.statusCode, proxyRes.headers);
+                
+                res.statusCode = proxyRes.statusCode;
+                proxyRes.pipe(res);
+              }
             } else {
-              console.log('error', proxyRes.statusCode, proxyRes.headers);
-              
-              res.statusCode = proxyRes.statusCode;
-              proxyRes.pipe(res);
+              _respond(500, err.stack);
             }
-          } else {
-            _respond(500, err.stack);
-          }
-        });
+          });
+        }
       };
       req.on('end', _end);
     } else {

@@ -86,9 +86,9 @@ const _readJson = (proxyRes, cb) => {
   proxyRes.on('end', function() {
     const b = Buffer.concat(bs);
     const s = b.toString('utf8');
-    console.log('got json result', {headers: proxyRes.headers, s});
-    const j = JSON.parse(s);
-    cb(null, j);
+    const split = s.split('\n');
+    const js = split.map(s => JSON.parse(s));
+    cb(null, js);
   });
   proxyRes.on('error', err => {
     cb(err, null);
@@ -180,12 +180,12 @@ try {
           }, proxyRes => {
             console.log('got proxy res 1', proxyRes.statusCode);
             if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
-              _readJson(proxyRes, (err, j) => {
+              _readJson(proxyRes, (err, js) => {
                 console.log('got proxy res 2', err, j);
                 if (!err) {
-                  res.end(JSON.stringify({
+                  res.end(JSON.stringify(js.map(j => ({
                     hash: j.Hash,
-                  }));
+                  }))));
                 } else {
                   res.statusCode = 500;
                   res.end(JSON.stringify(err));
@@ -211,10 +211,10 @@ try {
           form.submit(addUrl, function(err, proxyRes) {
             if (!err) {
               if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
-                _readJson(proxyRes, (err, j) => {
+                _readJson(proxyRes, (err, js) => {
                   if (!err) {
                     res.end(JSON.stringify({
-                      hash: j.Hash,
+                      hash: js[0].Hash,
                     }));
                   } else {
                     res.statusCode = 500;

@@ -185,6 +185,7 @@ try {
                 console.log('got proxy res 2', err, js);
                 if (!err) {
                   res.end(JSON.stringify(js.map(j => ({
+                    name: j.Name,
                     hash: j.Hash,
                   }))));
                 } else {

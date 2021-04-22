@@ -164,15 +164,19 @@ try {
       const _end = () => {
         const b = Buffer.concat(bs);
         bs.length = 0;
+        
+        console.log('end', b.length);
 
         if (isFormData) {
-          // console.log('post form data', isFormData);
+          console.log('end form data', isFormData);
           const proxyReq = http.request({
             method: 'POST',
             url: addUrl,
             headers: req.headers,
           }, proxyRes => {
+            console.log('got proxy res 1', proxyRes.statusCode);
             _readJson(proxyRes, (err, j) => {
+              console.log('got proxy res 2', err, j);
               if (!err) {
                 res.end(JSON.stringify({
                   hash: j.Hash,

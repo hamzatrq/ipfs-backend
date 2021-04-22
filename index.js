@@ -143,7 +143,7 @@ try {
       }
     } else if (method === 'POST') {
       const contentType = headers['content-type'];
-      const isFormData = contentType === /^multipart\/form\-data;/.test(contentType);
+      const isFormData = /^multipart\/form\-data;/.test(contentType);
       console.log('got post content type', {contentType, isFormData});
       
       const bs = [];

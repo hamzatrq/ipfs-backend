@@ -1,5 +1,5 @@
 {
-  "name": "exokit-backend",
+  "name": "ipfs-backend",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/modulesio/webaverse-server.git"
+    "url": "git+https://github.com/webaverse/ipfs-backend.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/modulesio/webaverse-server/issues"
+    "url": "https://github.com/webaverse/ipfs-backend/issues"
   },
-  "homepage": "https://github.com/modulesio/webaverse-server#readme",
+  "homepage": "https://github.com/webaverse/ipfs-backend#readme",
   "dependencies": {
     "form-data": "^2.3.3",
     "http-proxy": "^1.18.1",

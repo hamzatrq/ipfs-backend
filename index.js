@@ -1,55 +1,17 @@
 const path = require('path');
-const stream = require('stream');
 const fs = require('fs');
 const url = require('url');
-const querystring = require('querystring');
 const http = require('http');
 const https = require('https');
-const dns = require('dns');
-const crypto = require('crypto');
-const zlib = require('zlib');
 const os = require('os');
 const child_process = require('child_process');
-// const mkdirp = require('mkdirp');
 const FormData = require('form-data');
-// const express = require('express');
 const httpProxy = require('http-proxy');
-// const ws = require('ws');
-// const LRU = require('lru');
-// const request = require('request');
-const mime = require('mime');
-// const AWS = require('aws-sdk');
-// const Stripe = require('stripe');
-// const puppeteer = require('puppeteer');
-// const namegen = require('./namegen.js');
-// const Base64Encoder = require('./encoder.js').Encoder;
-// const {JSONServer, CustomEvent} = require('./dist/sync-server.js');
-const fetch = require('node-fetch');
-const {SHA3} = require('sha3');
-// const {default: formurlencoded} = require('form-urlencoded');
-// const Web3 = require('web3');
-// const bip39 = require('bip39');
-// const {hdkey} = require('ethereumjs-wallet');
-// const blockchain = require('./blockchain.js');
-const {getExt, makePromise} = require('./utils.js');
-// const browserManager = require('./browser-manager.js');
-
-// const api = require('./api.js');
-// const { _handleStorageRequest } = require('./routes/storage.js');
-// const { _handleAccountsRequest } = require('./routes/accounts.js');
-// const { _handlePreviewRequest } = require('./routes/preview.js')
-// const { worldManager, _handleWorldsRequest, _startWorldsRoute } = require('./routes/worlds.js');
-// const { _handleSignRequest } = require('./routes/sign.js');
-// const { _handleAnalyticsRequest } = require('./routes/analytics.js');
 
 const CERT = fs.readFileSync('./certs/fullchain.pem');
 const PRIVKEY = fs.readFileSync('./certs/privkey.pem');
 
 const PORT = parseInt(process.env.PORT, 10) || 80;
-// const filterTopic = 'webxr-site';
-// const web3MainEndpoint = `https://${infuraNetwork}.infura.io/v3/${infuraProjectId}`;
-// const tableName = 'users';
-// const defaultAvatarPreview = `https://preview.exokit.org/[https://raw.githubusercontent.com/avaer/vrm-samples/master/vroid/male.vrm]/preview.png`;
 
 Error.stackTraceLimit = 300;
 
@@ -74,9 +36,6 @@ ipfsProcess.stderr.pipe(process.stderr);
 ipfsProcess.on('exit', code => {
   console.warn('ipfs exited', code);
 });
-//process.on('exit', () => {
-//  ipfsProcess.kill(9);
-//});
 
 const _readJson = (proxyRes, cb) => {
   const bs = [];
@@ -112,14 +71,9 @@ const _handleIpfs = async (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', '*');
   };
 
-  // console.log('got ipfs req 1', req);
-
 try {
     const {method, headers} = req;
-    // console.log('got ipfs req 2', method);
     const {pathname: p} = url.parse(req.url);
-
-    // console.log('got ipfs req 3', {method, p});
 
     _setCorsHeaders(res);
     if (method === 'OPTIONS') {

@@ -137,6 +137,11 @@ try {
         }
         const proxy = httpProxy.createProxyServer({});
         req.url = url;
+        proxy.on('proxyRes', (proxyRes, req, res) => {
+          if (/\.(?:tjs|rtfjs)$/.test(url)) {
+            proxyRes.headers['content-type'] = 'application/javascript';
+          }
+        });
         proxy
           .web(req, res, {
             target: `http://127.0.0.1:${IPFS_HTTP_PORT}`,

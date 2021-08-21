@@ -6,7 +6,7 @@ const mime = require('mime');
 const {_setCorsHeaders, getExt} = require('../utils.js');
 
 const hashAlgorithm = 'sha256';
-const MAX_SIZE = 50 * 1024 * 1024;
+const MAX_SIZE = 100 * 1024 * 1024;
 
 const _handleStorageRequest = async (req, res) => {
     try {

@@ -34,14 +34,6 @@ const {SHA3} = require('sha3');
 const {getExt, makePromise} = require('./utils.js');
 // const browserManager = require('./browser-manager.js');
 
-// const api = require('./api.js');
-// const { _handleStorageRequest } = require('./routes/storage.js');
-// const { _handleAccountsRequest } = require('./routes/accounts.js');
-// const { _handlePreviewRequest } = require('./routes/preview.js')
-// const { worldManager, _handleWorldsRequest, _startWorldsRoute } = require('./routes/worlds.js');
-// const { _handleSignRequest } = require('./routes/sign.js');
-// const { _handleAnalyticsRequest } = require('./routes/analytics.js');
-
 const CERT = fs.readFileSync('./certs/fullchain.pem');
 const PRIVKEY = fs.readFileSync('./certs/privkey.pem');
 

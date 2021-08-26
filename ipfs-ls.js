@@ -15,7 +15,10 @@ const req = http.request(lsUrl, {
     const b = Buffer.concat(bs);
     const s = b.toString('utf8');
     const j = JSON.parse(s);
-    console.log('got j', j);
+    const hashes = Object.keys(j.Keys);
+    for (const hash of hashes) {
+      console.log(hash);
+    }
   });
 });
 req.on('error', err => {

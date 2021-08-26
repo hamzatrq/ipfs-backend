@@ -14,7 +14,6 @@ if (process.argv[2]) {
       const b = Buffer.concat(bs);
       const s = b.toString('utf8');
       const j = JSON.parse(s);
-      console.log('got', j);
     });
   });
   req.on('error', err => {

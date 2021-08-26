@@ -33,6 +33,7 @@ const {SHA3} = require('sha3');
 // const blockchain = require('./blockchain.js');
 const {getExt, makePromise} = require('./utils.js');
 // const browserManager = require('./browser-manager.js');
+const {MAX_SIZE, IPFS_HTTP_PORT, IPFS_PORT} = require('./constants.js');
 
 const CERT = fs.readFileSync('./certs/fullchain.pem');
 const PRIVKEY = fs.readFileSync('./certs/privkey.pem');
@@ -88,9 +89,6 @@ const _readJson = (proxyRes, cb) => {
   });
 };
 
-const MAX_SIZE = 100 * 1024 * 1024;
-const IPFS_HTTP_PORT = 8080;
-const IPFS_PORT = 5001;
 const addUrl = `http://127.0.0.1:${IPFS_PORT}/api/v0/add`;
 const _handleIpfs = async (req, res) => {
   const _respond = (statusCode, body) => {

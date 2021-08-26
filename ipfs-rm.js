@@ -6,7 +6,8 @@ if (process.argv[2]) {
   const req = http.request(rmUrl + process.argv[2], {
     method: 'POST',
   }, res => {
-    const bs = [];
+    res.pipe(process.stdout);
+    /* const bs = [];
     res.on('data', d => {
       bs.push(d);
     });
@@ -14,7 +15,7 @@ if (process.argv[2]) {
       const b = Buffer.concat(bs);
       const s = b.toString('utf8');
       const j = JSON.parse(s);
-    });
+    }); */
   });
   req.on('error', err => {
     throw err;

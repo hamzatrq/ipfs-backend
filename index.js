@@ -116,7 +116,7 @@ try {
       res.statusCode = 200;
       res.end();
     } else if (method === 'GET') {
-      const match = req.url.match(/^(\/ipfs)?(\/[a-z0-9]+\/?)/i);
+      const match = req.url.match(/^(\/ipfs)?(\/[a-z0-9]+)(?:\/([^\/]*))?$/i);
       if (match) {
         console.log('got match', req.url, match);
         let url;
@@ -128,7 +128,7 @@ try {
         const proxy = httpProxy.createProxyServer({});
         req.url = url;
         proxy.on('proxyRes', (proxyRes, req, res) => {
-          const overrideContentTypeToJs = /\.(?:js|tjs|rtfjs)$/.test(url);
+          const overrideContentTypeToJs = /\.(?:js|tjs|rtfjs)$/.test(match[3] || '');
           console.log('override content type? ' + url + ' : ' + overrideContentTypeToJs);
           if (overrideContentTypeToJs) {
             proxyRes.headers['content-type'] = 'application/javascript';

@@ -128,7 +128,7 @@ try {
         const proxy = httpProxy.createProxyServer({});
         req.url = url;
         proxy.on('proxyRes', (proxyRes, req, res) => {
-          const overrideContentTypeToJs = /\.(?:js|tjs|rtfjs)(?:\?.*)?$/.test(url);
+          const overrideContentTypeToJs = /\.(?:js|tjs|rtfjs)$/.test(url);
           console.log('override content type? ' + url + ' : ' + overrideContentTypeToJs);
           if (overrideContentTypeToJs) {
             proxyRes.headers['content-type'] = 'application/javascript';

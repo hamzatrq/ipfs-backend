@@ -89,6 +89,51 @@ const _readJson = (proxyRes, cb) => {
   });
 };
 
+const tempHashTimeoutTime = 10 * 1000;
+class TempHash {
+  constructor(hash) {
+    this.hash = hash;
+    this.timeout = 0;
+    this.kick();
+  }
+  kick() {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      tempHashes.delete(this.hash);
+    }, tempHashTimeoutTime);
+  }
+}
+const tempHashes = new Map();
+
+const rmUrl = `http://127.0.0.1:${IPFS_PORT}/api/v0/pin/rm?arg=`;
+const gcUrl = `http://127.0.0.1:${IPFS_PORT}/api/v0/pin/ls`;
+class IpfsGarbageCollector {
+  constructor() {
+    (async () => {
+      const tokens = await (async () => {
+        const tokens = [];
+        const step = 100;
+        for (let i = 1;; i += step) {
+          const res = await fetch(`https://tokens.webaverse.com/${i}-${i + step}`);
+          const j = await res.json();
+          if (j.length > 0) {
+            tokens.push.apply(tokens, j);
+            console.log('fetching tokens [' + tokens.length + ']');
+          } else {
+            break;
+          }
+        }
+        return tokens;
+      })();
+      const proxyReq = http.request(gcUrl, {
+        method: 'POST',
+      }, proxyRes => {
+        proxyRes
+      });
+    })();
+  }
+}
+
 const addUrl = `http://127.0.0.1:${IPFS_PORT}/api/v0/add`;
 const _handleIpfs = async (req, res) => {
   const _respond = (statusCode, body) => {
@@ -128,8 +173,9 @@ try {
         const proxy = httpProxy.createProxyServer({});
         req.url = url;
         proxy.on('proxyRes', (proxyRes, req, res) => {
-          const overrideContentTypeToJs = /\.(?:js|tjs|rtfjs)$/.test(match[3] || '');
-          console.log('override content type? ' + url + ' : ' + overrideContentTypeToJs);
+          const filename = match[3] || '';
+          const overrideContentTypeToJs = /\.(?:js|tjs|rtfjs)$/.test(filename);
+          console.log('override content type? ' + filename + ' : ' + overrideContentTypeToJs);
           if (overrideContentTypeToJs) {
             proxyRes.headers['content-type'] = 'application/javascript';
           }
@@ -192,10 +238,21 @@ try {
               _readJson(proxyRes, (err, js) => {
                 console.log('got proxy res 2', err, js);
                 if (!err) {
-                  res.end(JSON.stringify(js.map(j => ({
+                  const items = js.map(j => ({
                     name: j.Name,
                     hash: j.Hash,
-                  }))));
+                  }));
+                  res.end(JSON.stringify(items));
+                  for (const item of items) {
+                    const {hash} = item;
+                    
+                    let tempHash = tempHashes.get(hash);
+                    if (tempHash) {
+                      tempHash.kick();
+                    } else {
+                      tempHash.set(hash, new TempHash(hash));
+                    }
+                  }
                 } else {
                   res.statusCode = 500;
                   res.end(JSON.stringify(err));
@@ -223,9 +280,19 @@ try {
               if (proxyRes.statusCode >= 200 && proxyRes.statusCode < 300) {
                 _readJson(proxyRes, (err, js) => {
                   if (!err) {
-                    res.end(JSON.stringify({
-                      hash: js[0].Hash,
-                    }));
+                    const hash = js[0].Hash;
+                    const item = {
+                      hash,
+                    };
+                    
+                    let tempHash = tempHashes.get(hash);
+                    if (tempHash) {
+                      tempHash.kick();
+                    } else {
+                      tempHash.set(hash, new TempHash(hash));
+                    }
+                    
+                    res.end(JSON.stringify(item));
                   } else {
                     res.statusCode = 500;
                     res.end(JSON.stringify(err));

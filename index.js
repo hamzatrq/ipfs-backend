@@ -155,7 +155,7 @@ try {
     } else if (method === 'POST') {
       const contentType = headers['content-type'];
       const contentLength = parseInt(headers['content-length'], 10) || 0;
-      const isFormData = /^multipart\/form\-data(?:;|$)/.test(contentType);
+      const isFormData = /^multipart\/form\-data;/.test(contentType);
       console.log('got post content type', {contentType, isFormData});
       
       const bs = [];

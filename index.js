@@ -205,6 +205,11 @@ try {
             } else {
               console.log('status code error in form', proxyRes.statusCode, proxyRes.headers);
               
+              proxyRes.setEncoding('utf8');
+              proxyRes.on('data', s => {
+                console.log('got data', {s});
+              });
+              
               res.statusCode = proxyRes.statusCode;
               proxyRes.pipe(res);
             }

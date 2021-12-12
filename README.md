@@ -1,4 +1,4 @@
-# exokit-backend
+# ipfs-backend
 
 Node server hosted on AWS, mainly used for REST endpoints.
 

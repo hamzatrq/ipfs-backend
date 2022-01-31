@@ -269,7 +269,11 @@ try {
   const o = url.parse(protocol + '//' + (req.headers['host'] || '') + req.url);
   console.log('got req', req.method, o);
   if (o.host === 'ipfs.exokit.org' || o.host === 'ipfs.webaverse.com') {
-    _handleIpfs(req, res);
+    if (o.pathname === '/upload-folder' && ['POST', 'OPTIONS'].includes(req.method)) {
+      _handleUploadFolder(req, res);
+    } else {
+      _handleIpfs(req, res);
+    }
     return;
   }
 

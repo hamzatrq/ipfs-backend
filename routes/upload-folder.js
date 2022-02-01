@@ -1,25 +1,19 @@
 // @ts-check
 const { create } = require('ipfs-http-client');
+const parseFormdata = require('parse-formdata');
+
+const { MAX_SIZE } = require('../constants.js');
 
 const ipfsClient = create();
 
 function _parseBody(req) {
   return new Promise((resolve, reject) => {
-    let body = '';
-    let bodyJSON = {};
-    req.on('data', chunk => {
-      body += chunk.toString();
-    });
-    req.on('end', () => {
-      try {
-        bodyJSON = JSON.parse(body);
-        if (!bodyJSON) {
-          bodyJSON = {};
-        }
-      } catch (error) {
-        bodyJSON = {};
+    parseFormdata(req, function (err, data) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data);
       }
-      resolve(bodyJSON);
     });
   });
 }
@@ -27,12 +21,9 @@ function _parseBody(req) {
 
 /* 
   *
-  * Accepts data in format
+  * Accepts formdata in format
   * body: {
-  *   abi: [{
-  *     path: '[path from directory e.g image/abc.jpg]',
-  *     content: '[base64 encoded string]'
-  *   }]
+  *   "file/relative/location/to/cid.jpg": "[file]"
   * }
   *
 */
@@ -54,42 +45,33 @@ async function _handleUploadFolder(req, res) {
     res.end();
     return;
   }
-
-  const body = await _parseBody(req);
-
-  if (!body.abi || !Array.isArray(body.abi)) {
-    return _respond(400, JSON.stringify('Invalid params'));
-  }
-
-
-  for (const file of body.abi) {
-    if (!file.path || !file.content) {
-      return _respond(400, JSON.stringify('Invalid params'));
-    }
-  }
-
-  const files = body.abi.map(file => {
-    let content = Buffer.from(file.content, 'base64');
-    return {
-      path: file.path,
-      content: content
-    }
-  });
-
-  const ipfsResponses = [];
-
-  for await (const result of ipfsClient.addAll(files, {
-    wrapWithDirectory: true
-  })) {
-    ipfsResponses.push({
-      path: result.path,
-      cid: result.cid.toString()
+  try {
+    const body = await _parseBody(req);
+    const files = body.parts.map(file => {
+      return {
+        path: file.name,
+        content: file.stream,
+      };
     });
-  }
 
-  _respond(200, JSON.stringify({
-    cid: ipfsResponses.pop().cid
-  }));
+    const ipfsResponses = [];
+
+    for await (const result of ipfsClient.addAll(files, {
+      wrapWithDirectory: true
+    })) {
+      ipfsResponses.push({
+        path: result.path,
+        cid: result.cid.toString()
+      });
+    }
+
+    _respond(200, JSON.stringify({
+      cid: ipfsResponses.pop().cid
+    }));
+  } catch (error) {
+    console.log(error);
+    _respond(500, 'Something went wrong');
+  }
 }
 
 module.exports = {

@@ -35,6 +35,8 @@ const {getExt, makePromise} = require('./utils.js');
 // const browserManager = require('./browser-manager.js');
 const {MAX_SIZE, IPFS_HTTP_PORT, IPFS_PORT} = require('./constants.js');
 
+const CERT = fs.readFileSync('./certs/fullchain.pem');
+const PRIVKEY = fs.readFileSync('./certs/privkey.pem');
 
 const { _handleUploadFolder } = require('./routes/upload-folder');
 
@@ -271,7 +273,7 @@ const _req = protocol => (req, res) => {
 try {
   const o = url.parse(protocol + '//' + (req.headers['host'] || '') + req.url);
   console.log('got req', req.method, o);
-  if (o.host === 'ipfs.exokit.org' || o.host === 'ipfs.webaverse.com' || o.host === 'localhost:5000') {
+  if (o.host === 'ipfs.exokit.org' || o.host === 'ipfs.webaverse.com') {
     if (o.pathname === '/upload-folder' && ['POST', 'OPTIONS'].includes(req.method)) {
       _handleUploadFolder(req, res);
     } else {

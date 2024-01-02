@@ -1,0 +1,144 @@
+repo_name: hamzatrq/ipfs-backend
+report_id: 5e6a17efe9ab5c463b39eb8e8731867a
+version: 0.1
+repo_type: Public
+timestamp: '2024-01-02T18:01:04+00:00'
+requested_by: hamzatrq
+provider: github
+branch: master
+detected_tools_count: 11
+tools:
+- name: JavaScript
+  description: Lightweight, interpreted, object-oriented language with first-class
+    functions
+  website_url: https://developer.mozilla.org/en-US/docs/Web/JavaScript
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/1209/javascript.jpeg
+  detection_source: Repo Metadata
+- name: Node.js
+  description: A platform built on Chrome's JavaScript runtime for easily building
+    fast, scalable network applications
+  website_url: http://nodejs.org/
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Frameworks (Full Stack)
+  image_url: https://img.stackshare.io/service/1011/n1JRsFeB_400x400.png
+  detection_source: package.json
+  last_updated_by: Avaer Kazmer
+  last_updated_on: 2020-12-27 03:10:32.000000000 Z
+- name: ws
+  description: A Node.js WebSocket library
+  website_url: https://github.com/websockets/ws
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Application Hosting
+  sub_category: Realtime Backend / API
+  image_url: https://img.stackshare.io/service/11381/no-img-open-source.png
+  detection_source: package.json
+  last_updated_by: Avaer Kazmer
+  last_updated_on: 2020-12-27 03:10:32.000000000 Z
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source: Repo Metadata
+- name: forever
+  description: A simple CLI tool
+  website_url: https://github.com/nodejitsu/forever
+  version: 3.0.2
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Monitoring
+  sub_category: Node.js Process Manager
+  image_url: https://img.stackshare.io/service/1740/10152066.png
+  detection_source_url: https://github.com/hamzatrq/ipfs-backend/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: soulofmischief
+  last_updated_on: 2021-04-01 17:22:07.000000000 Z
+- name: npm
+  description: The package manager for JavaScript.
+  website_url: https://www.npmjs.com/
+  open_source: false
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Front End Package Manager
+  image_url: https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png
+  detection_source: package.json
+  last_updated_by: Avaer Kazmer
+  last_updated_on: 2020-12-27 03:10:32.000000000 Z
+- name: Shell
+  description: A shell is a text-based terminal, used for manipulating programs and
+    files. Shell scripts typically manage program execution.
+  website_url: https://en.wikipedia.org/wiki/Shell_script
+  open_source: false
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/4631/default_c2062d40130562bdc836c13dbca02d318205a962.png
+  detection_source: Repo Metadata
+- name: form-data
+  description: A library to create readable "multipart/form-data" streams
+  package_url: https://www.npmjs.com/form-data
+  version: 2.3.3
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/16415/default_aa91da3cee4d961f0eea8ca5de77f399ec7ec794.png
+  detection_source_url: https://github.com/hamzatrq/ipfs-backend/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: Hamza Tariq
+  last_updated_on: 2022-02-01 09:09:05.000000000 Z
+- name: http-proxy
+  description: HTTP proxying for the masses
+  package_url: https://www.npmjs.com/http-proxy
+  version: 1.18.1
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/16430/default_d73092129e1cde5ea9f47f22e2d7c3db7bd6da8d.png
+  detection_source_url: https://github.com/hamzatrq/ipfs-backend/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: Hamza Tariq
+  last_updated_on: 2022-01-31 12:39:33.000000000 Z
+- name: mime
+  description: A comprehensive library for mime-type mapping
+  package_url: https://www.npmjs.com/mime
+  version: 2.4.6
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/16182/default_ac04a744873b460c4ef30a7450ed0c83223640ab.png
+  detection_source_url: https://github.com/hamzatrq/ipfs-backend/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: Avaer Kazmer
+  last_updated_on: 2020-12-27 03:10:32.000000000 Z
+- name: node-fetch
+  description: A light-weight module that brings window.fetch to node.js
+  package_url: https://www.npmjs.com/node-fetch
+  version: 2.6.7
+  license: MIT
+  open_source: true
+  hosted_saas: false
+  category: Libraries
+  sub_category: npm Packages
+  image_url: https://img.stackshare.io/package/15978/default_f49d4c116f8ea0155f4d92673b084378bba02760.png
+  detection_source_url: https://github.com/hamzatrq/ipfs-backend/blob/master/package-lock.json
+  detection_source: package.json
+  last_updated_by: soulofmischief
+  last_updated_on: 2021-04-01 17:22:07.000000000 Z
